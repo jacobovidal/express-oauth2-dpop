@@ -5,7 +5,7 @@ A monorepo containing the `express-oauth2-dpop` library and example applications
 [![License](https://img.shields.io/:license-mit-blue.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 ## 📦 Packages
-- [`express-oauth2-dpop`](./packages/express-oauth2-dpop/README.md) - Lightweight HTTP client built on top of the native `fetch` API, designed to simplify making requests to both public and OAuth-protected resources.
+- [`express-oauth2-dpop`](./packages/express-oauth2-dpop/README.md) - Protect your Express API (resource server) routes with OAuth 2.0 JWT Bearer and DPoP-bound access tokens issued by an authorization server.
 
 ## 🚀 Examples
 
