@@ -1,5 +1,5 @@
 {
-  "name": "oauth-fetch",
+  "name": "express-oauth2-dpop",
   "version": "1.0.0",
   "workspaces": [
     "packages/*",
