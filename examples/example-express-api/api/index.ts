@@ -23,7 +23,7 @@ app.get("/public/hello", function (_req: Request, res: Response) {
 app.use(
   authMiddleware({
     issuer: getEnv("AUTH_ISSUER"),
-    jwksUri: getEnv("AUTH_JWKS_UR"),
+    jwksUri: getEnv("AUTH_JWKS_URI"),
     audience: getEnv("AUTH_AUDIENCE"),
     protectRoute: false, // When disabled, you need to use protectRoute() middleware to protect the routes
     jtiStore: new RedisJtiStore(),
