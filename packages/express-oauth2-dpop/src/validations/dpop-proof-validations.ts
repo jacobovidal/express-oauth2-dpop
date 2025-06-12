@@ -94,7 +94,11 @@ export function validateHtu(req: Request, htu: DpopProofPayload["htu"]): void {
     throw new Error("DPoP 'htu' claim is required");
   }
 
-  const expectedUrl = `${req.protocol}://${req.get("host")}${req.path}`;
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  const pathname = new URL(req.originalUrl, baseUrl).pathname;
+
+  const expectedUrl = `${baseUrl}${pathname}`;
 
   if (htu !== expectedUrl) {
     throw new Error(
