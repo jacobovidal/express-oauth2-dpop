@@ -4,7 +4,6 @@ import {
   calculateJwkThumbprint,
   EncryptJWT,
   jwtDecrypt,
-  generateSecret,
 } from "jose";
 import type { Request, Response } from "express";
 
@@ -12,23 +11,39 @@ import { AbstractJtiStore } from "../store/abstract-jti-store.js";
 import { UseDpopNonce } from "../errors/errors.js";
 import type { JWK, JWTHeaderParameters } from "jose";
 import type { DpopProofPayload, NonceData } from "../types/types.internal.js";
+import { AuthMiddlewareOptions } from "src/types/types.js";
 
 const IAT_LEEWAY = 30;
 const NONCE_EXPIRATION = 60 * 5;
-const NONCE_SECRET = await generateSecret("A256GCM");
 
-async function createNonce(ath: string): Promise<string> {
+function getKeyObjectFromNonceSecret(nonceSecret: string): crypto.KeyObject {
+  const raw = Buffer.from(nonceSecret, "base64url");
+
+  return crypto.createSecretKey(raw);
+}
+
+async function createNonce(
+  ath: string,
+  authOptions: AuthMiddlewareOptions
+): Promise<string> {
   const exp = Math.floor(Date.now() / 1000) + NONCE_EXPIRATION;
+
+  const secretKey = getKeyObjectFromNonceSecret(authOptions.nonceSecret);
 
   return await new EncryptJWT({ ath })
     .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
     .setIssuedAt()
     .setExpirationTime(exp)
-    .encrypt(NONCE_SECRET);
+    .encrypt(secretKey);
 }
 
-async function decryptNonce(nonce: string): Promise<NonceData> {
-  const { payload } = await jwtDecrypt(nonce, NONCE_SECRET);
+async function decryptNonce(
+  nonce: string,
+  authOptions: AuthMiddlewareOptions
+): Promise<NonceData> {
+  const secretKey = getKeyObjectFromNonceSecret(authOptions.nonceSecret);
+
+  const { payload } = await jwtDecrypt(nonce, secretKey);
 
   return payload as NonceData;
 }
@@ -140,9 +155,10 @@ export async function validateJti(
 export async function validateNonce(
   nonce: DpopProofPayload["nonce"],
   ath: DpopProofPayload["ath"],
-  res: Response
+  res: Response,
+  authOptions: AuthMiddlewareOptions,
 ): Promise<void> {
-  const newNonce = await createNonce(ath as string);
+  const newNonce = await createNonce(ath as string, authOptions);
 
   if (!nonce) {
     res.setHeader("DPoP-Nonce", newNonce);
@@ -151,7 +167,7 @@ export async function validateNonce(
   }
 
   try {
-    const { ath: nonceAth, exp: nonceExp } = await decryptNonce(nonce);
+    const { ath: nonceAth, exp: nonceExp } = await decryptNonce(nonce, authOptions);
 
     if (ath !== nonceAth) {
       throw new Error();

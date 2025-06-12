@@ -4,3 +4,5 @@ example
 coverage
 .turbo
 .env
+.vercel
+.env*.local

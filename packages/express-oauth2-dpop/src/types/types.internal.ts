@@ -44,4 +44,3 @@ export type NonceData = {
    */
   ath?: string;
 };
-

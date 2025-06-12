@@ -3,7 +3,7 @@ import cors from "cors";
 import { authMiddleware, protectRoute } from "express-oauth2-dpop";
 import type { Request, Response } from "express";
 
-import { InMemoryJtiStore } from "./store/in-memory-jti-store.js";
+import { RedisJtiStore } from "./store/redis-jti-store.js";
 
 const app = express();
 
@@ -26,7 +26,8 @@ app.use(
       "https://demo.duendesoftware.com/.well-known/openid-configuration/jwks",
     audience: "api",
     protectRoute: false, // When disabled, you need to use protectRoute() middleware to protect the routes
-    jtiStore: new InMemoryJtiStore(),
+    jtiStore: new RedisJtiStore(),
+    nonceSecret: 's8vl0-8G-mT8OVR7UoY0GcGoyjM-SgN7IFo6HpVCK6s'
   }),
 );
 
@@ -63,7 +64,5 @@ app.get(
     });
   },
 );
-
-app.listen(3000, () => console.log("Server ready on port 3000."));
 
 export default app;

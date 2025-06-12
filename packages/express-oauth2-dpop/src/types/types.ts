@@ -60,6 +60,7 @@ export type AuthMiddlewareOptions = {
    * @default false
    */
   enforceDPoP?: boolean;
+  nonceSecret: string;
   jtiStore: AbstractJtiStore;
 };
 

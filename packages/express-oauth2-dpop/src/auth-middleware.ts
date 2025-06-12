@@ -46,6 +46,8 @@ function buildJwksUri(authOptions: AuthMiddlewareOptions): URL {
 function verifyAuthOptions(authOptions: AuthMiddlewareOptions): void {
   assert(authOptions.issuer, "'issuer' must be provided in options");
   assert(authOptions.audience, "'audience' must be provided in options");
+  assert(authOptions.nonceSecret, "'nonceSecret' must be provided in options");
+  assert(authOptions.nonceSecret.length !== 32, "'nonceSecret' must be 32 bytes");
 }
 
 async function verifyAccessToken({
@@ -77,7 +79,7 @@ async function verifyAccessToken({
       throw new InvalidToken(
         TOKEN_TYPE.BEARER,
         authOptions.audience,
-        "The access token is expired"
+        "The access token is expired",
       );
     }
 
@@ -85,7 +87,7 @@ async function verifyAccessToken({
       throw new InvalidToken(
         TOKEN_TYPE.BEARER,
         authOptions.audience,
-        "The access token is invalid"
+        "The access token is invalid",
       );
     }
 
@@ -93,7 +95,7 @@ async function verifyAccessToken({
     throw new InvalidToken(
       TOKEN_TYPE.BEARER,
       authOptions.audience,
-      "The access token is invalid"
+      "The access token is invalid",
     );
   }
 }
@@ -104,12 +106,12 @@ async function verifyDpopProof(
   proof: string,
   authOptions: AuthMiddlewareOptions,
   token: string,
-  jktFromAccessToken: string
+  jktFromAccessToken: string,
 ): Promise<void> {
   try {
     const { payload, protectedHeader } = await jwtVerify(
       proof as string,
-      EmbeddedJWK
+      EmbeddedJWK,
     );
     const { htm, htu, ath, jti, nonce, iat } = payload as DpopProofPayload;
 
@@ -119,7 +121,7 @@ async function verifyDpopProof(
     validateHtm(req, htm);
     validateHtu(req, htu);
     await validateAth(token, ath);
-    await validateNonce(nonce, ath, res);
+    await validateNonce(nonce, ath, res, authOptions);
 
     await validateJti(jti, authOptions.jtiStore);
   } catch (e) {
@@ -131,7 +133,7 @@ async function verifyDpopProof(
       throw new InvalidDpopProof(
         TOKEN_TYPE.DPOP,
         authOptions.audience,
-        e.message
+        e.message,
       );
     }
   }
@@ -213,7 +215,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidToken(
             TOKEN_TYPE.DPOP,
             authOptions.audience,
-            "The access token needs to be DPoP-bound"
+            "The access token needs to be DPoP-bound",
           );
         }
 
@@ -221,7 +223,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidRequest(
             TOKEN_TYPE.BEARER,
             authOptions.audience,
-            "DPoP-bound access tokens must be used with a DPoP authorization header"
+            "DPoP-bound access tokens must be used with a DPoP authorization header",
           );
         }
 
@@ -231,7 +233,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidRequest(
             TOKEN_TYPE.DPOP,
             authOptions.audience,
-            "DPoP header is required when using DPoP token type"
+            "DPoP header is required when using DPoP token type",
           );
         }
 
@@ -241,7 +243,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           proof as string,
           authOptions,
           verifiedAccessToken,
-          (payload.cnf as { jkt: string }).jkt
+          (payload.cnf as { jkt: string }).jkt,
         );
       }
 
@@ -298,7 +300,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
 };
 
 export function protectRoute(
-  options: ProtectRouteOptions = {}
+  options: ProtectRouteOptions = {},
 ): (req: Request, res: Response, next: NextFunction) => void {
   const { enforceDPoP = false, requiredScopes } = options;
 
@@ -320,14 +322,14 @@ export function protectRoute(
       if (!scope || scope !== "string") {
         res.status(403).json({
           error: "insufficient_scope",
-          error_description: 'The access token has no scopes',
+          error_description: "The access token has no scopes",
         });
       }
 
       const tokenScopes = (scope as string).split(" ");
 
       const hasAllScopes = requiredScopes.every((scope) =>
-        tokenScopes.includes(scope)
+        tokenScopes.includes(scope),
       );
 
       if (!hasAllScopes) {
