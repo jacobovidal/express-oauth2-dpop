@@ -14,12 +14,12 @@ const client = createClient({
 await client.connect();
 
 export class RedisJtiStore extends AbstractJtiStore {
-  async set(identifier: string, data: JtiData): Promise<void> {    
+  async set(identifier: string, data: JtiData): Promise<void> {
     client.set(identifier, JSON.stringify(data), {
       expiration: {
         type: "EXAT",
         value: data.expiresAt,
-      }
+      },
     });
   }
 

@@ -20,16 +20,14 @@ app.get("/public/hello", function (_req: Request, res: Response) {
   });
 });
 
-
-
 app.use(
   authMiddleware({
-    issuer: getEnv('AUTH_ISSUER'),
-    jwksUri: getEnv('AUTH_JWKS_UR'),
-    audience: getEnv('AUTH_AUDIENCE'),
+    issuer: getEnv("AUTH_ISSUER"),
+    jwksUri: getEnv("AUTH_JWKS_UR"),
+    audience: getEnv("AUTH_AUDIENCE"),
     protectRoute: false, // When disabled, you need to use protectRoute() middleware to protect the routes
     jtiStore: new RedisJtiStore(),
-    nonceSecret: getEnv('AUTH_NONCE_SECRET'),
+    nonceSecret: getEnv("AUTH_NONCE_SECRET"),
   }),
 );
 
@@ -66,5 +64,12 @@ app.get(
     });
   },
 );
+
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({
+    error: "not_found",
+    error_description: "The requested resource was not found",
+  });
+});
 
 export default app;
