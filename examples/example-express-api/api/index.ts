@@ -4,6 +4,7 @@ import { authMiddleware, protectRoute } from "express-oauth2-dpop";
 import type { Request, Response } from "express";
 
 import { RedisJtiStore } from "./store/redis-jti-store.js";
+import { getEnv } from "./utils.js";
 
 const app = express();
 
@@ -19,15 +20,16 @@ app.get("/public/hello", function (_req: Request, res: Response) {
   });
 });
 
+
+
 app.use(
   authMiddleware({
-    issuer: "https://demo.duendesoftware.com",
-    jwksUri:
-      "https://demo.duendesoftware.com/.well-known/openid-configuration/jwks",
-    audience: "api",
+    issuer: getEnv('AUTH_ISSUER'),
+    jwksUri: getEnv('AUTH_JWKS_UR'),
+    audience: getEnv('AUTH_AUDIENCE'),
     protectRoute: false, // When disabled, you need to use protectRoute() middleware to protect the routes
     jtiStore: new RedisJtiStore(),
-    nonceSecret: 's8vl0-8G-mT8OVR7UoY0GcGoyjM-SgN7IFo6HpVCK6s'
+    nonceSecret: getEnv('AUTH_NONCE_SECRET'),
   }),
 );
 
