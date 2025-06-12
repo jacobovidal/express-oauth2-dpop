@@ -24,7 +24,7 @@ function getKeyObjectFromNonceSecret(nonceSecret: string): crypto.KeyObject {
 
 async function createNonce(
   ath: string,
-  authOptions: AuthMiddlewareOptions
+  authOptions: AuthMiddlewareOptions,
 ): Promise<string> {
   const exp = Math.floor(Date.now() / 1000) + NONCE_EXPIRATION;
 
@@ -39,7 +39,7 @@ async function createNonce(
 
 async function decryptNonce(
   nonce: string,
-  authOptions: AuthMiddlewareOptions
+  authOptions: AuthMiddlewareOptions,
 ): Promise<NonceData> {
   const secretKey = getKeyObjectFromNonceSecret(authOptions.nonceSecret);
 
@@ -70,7 +70,7 @@ export function validateIat(iat: DpopProofPayload["iat"]): void {
 
   if (iat < lowerBound || iat > upperBound) {
     throw new Error(
-      `DPoP 'iat' is not within acceptable time range: expected between ${lowerBound} and ${upperBound}, got ${iat}`
+      `DPoP 'iat' is not within acceptable time range: expected between ${lowerBound} and ${upperBound}, got ${iat}`,
     );
   }
 }
@@ -84,7 +84,7 @@ export function validateHtm(req: Request, htm: DpopProofPayload["htm"]): void {
 
   if (htm !== expectedMethod) {
     throw new Error(
-      `DPoP 'htm' mismatch: expected '${expectedMethod}', got '${htm}'`
+      `DPoP 'htm' mismatch: expected '${expectedMethod}', got '${htm}'`,
     );
   }
 }
@@ -98,7 +98,7 @@ export function validateHtu(req: Request, htu: DpopProofPayload["htu"]): void {
 
   if (htu !== expectedUrl) {
     throw new Error(
-      `DPoP 'htu' mismatch: expected "${expectedUrl}", got "${htu}"`
+      `DPoP 'htu' mismatch: expected "${expectedUrl}", got "${htu}"`,
     );
   }
 }
@@ -108,14 +108,14 @@ export async function validateJwk(jwk: JWK, jkt: string): Promise<void> {
 
   if (jkt !== expectedJkt) {
     throw new Error(
-      `DPoP 'jkt' mismatch: expected '${expectedJkt}', got '${jkt}'`
+      `DPoP 'jkt' mismatch: expected '${expectedJkt}', got '${jkt}'`,
     );
   }
 }
 
 export async function validateAth(
   token: string,
-  ath: DpopProofPayload["ath"]
+  ath: DpopProofPayload["ath"],
 ): Promise<void> {
   if (!ath) {
     throw new Error("DPoP 'ath' claim is required");
@@ -126,14 +126,14 @@ export async function validateAth(
 
   if (ath !== expectedAth) {
     throw new Error(
-      `DPoP 'ath' mismatch: expected '${expectedAth}', got '${ath}'`
+      `DPoP 'ath' mismatch: expected '${expectedAth}', got '${ath}'`,
     );
   }
 }
 
 export async function validateJti(
   jti: DpopProofPayload["jti"],
-  jtiStore: AbstractJtiStore
+  jtiStore: AbstractJtiStore,
 ): Promise<void> {
   if (!jti) {
     throw new Error("DPoP 'jti' claim is required");
@@ -167,7 +167,10 @@ export async function validateNonce(
   }
 
   try {
-    const { ath: nonceAth, exp: nonceExp } = await decryptNonce(nonce, authOptions);
+    const { ath: nonceAth, exp: nonceExp } = await decryptNonce(
+      nonce,
+      authOptions,
+    );
 
     if (ath !== nonceAth) {
       throw new Error();

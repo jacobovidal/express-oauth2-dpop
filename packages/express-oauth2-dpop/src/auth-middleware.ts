@@ -47,7 +47,10 @@ function verifyAuthOptions(authOptions: AuthMiddlewareOptions): void {
   assert(authOptions.issuer, "'issuer' must be provided in options");
   assert(authOptions.audience, "'audience' must be provided in options");
   assert(authOptions.nonceSecret, "'nonceSecret' must be provided in options");
-  assert(authOptions.nonceSecret.length !== 32, "'nonceSecret' must be 32 bytes");
+  assert(
+    authOptions.nonceSecret.length !== 32,
+    "'nonceSecret' must be 32 bytes",
+  );
 }
 
 async function verifyAccessToken({
