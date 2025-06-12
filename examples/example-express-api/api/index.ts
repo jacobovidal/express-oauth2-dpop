@@ -7,6 +7,8 @@ import PrivateRoutes from "./routes/private.js";
 
 const app = express();
 
+app.set('trust proxy', true);
+
 app.use(
   cors({
     exposedHeaders: ["DPoP-Nonce", "WWW-Authenticate"],
