@@ -1,0 +1,75 @@
+{
+	"name": "express-oauth2-dpop",
+	"version": "1.0.0",
+	"description": "Protect your Express API (resource server) routes with OAuth 2.0 JWT Bearer and DPoP-bound access tokens issued by an authorization server.",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "tsup",
+		"build:watch": "tsup --watch",
+		"clean": "rm -rf ./dist",
+		"docs": "typedoc",
+		"lint": "eslint \"./**/*.ts*\"",
+		"format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx,json,md}\"",
+		"test": "vitest run",
+		"test:ci": "vitest --watch false --coverage",
+		"prepublishOnly": "npm run clean && npm run lint && npm run format && npm run test && npm run build"
+	},
+	"author": "Jacobo Vidal",
+	"license": "MIT",
+	"devDependencies": {
+		"@eslint/js": "^9.28.0",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.1",
+		"@types/jsonwebtoken": "^9.0.9",
+		"@types/node": "^22.14.1",
+		"prettier": "^3.5.3",
+		"tsup": "^8.5.0",
+		"typescript": "^5.8.3",
+		"typescript-eslint": "^8.34.0"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jacobovidal/express-oauth2-dpop.git",
+		"directory": "packages/express-oauth2-dpop"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"keywords": [
+		"express",
+		"dpop",
+		"oauth",
+		"oauth2",
+		"auth0",
+		"bearer",
+		"typescript",
+		"api",
+		"javascript",
+		"access token",
+		"auth",
+		"authentication",
+		"authz",
+		"authorization",
+		"resource server",
+		"jwks",
+		"jwt",
+		"openid",
+		"sdk"
+	],
+	"dependencies": {
+		"jose": "^6.0.11"
+	}
+}
