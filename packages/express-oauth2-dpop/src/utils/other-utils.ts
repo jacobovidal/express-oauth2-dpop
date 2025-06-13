@@ -20,12 +20,12 @@ export function assertAuthOptions(authOptions: AuthMiddlewareOptions): void {
   assert(authOptions.nonceSecret, "'nonceSecret' must be provided in options");
   assert(
     Buffer.from(authOptions.nonceSecret, "hex").length === 32,
-    "'nonceSecret' must be 32 bytes"
+    "'nonceSecret' must be 32 bytes",
   );
 }
 
 export function parseAuthorizationHeader(
-  authorization?: string
+  authorization?: string,
 ): ParsedAuthorizationHeaders {
   if (!authorization) {
     return null;
