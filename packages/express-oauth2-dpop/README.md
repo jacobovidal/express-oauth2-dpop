@@ -237,7 +237,7 @@ app.use(
 
 ## DPoP Nonce
 
-To comply with [RFC 9449 §9.2](https://datatracker.ietf.org/doc/html/rfc9449#section-9.2) and mitigate token replay attacks, we support issuing and validating **DPoP nonces** in a **stateless** manner.
+To comply with [RFC 9449 §9](https://datatracker.ietf.org/doc/html/rfc9449#section-9.2) and mitigate token replay attacks, we support issuing and validating **DPoP nonces** in a **stateless** manner.
 
 Instead of maintaining nonce state on the server, `express-oauth2-dpop` uses **AES-GCM encryption** to embed the nonce's data (including the `ath` hash) directly in the encrypted payload. The nonce is:
 
