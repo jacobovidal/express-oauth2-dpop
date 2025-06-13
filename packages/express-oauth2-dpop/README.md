@@ -246,9 +246,9 @@ Instead of maintaining nonce state on the server, `express-oauth2-dpop` uses **A
 - Short-lived (default expiration: 5 minutes)
 
 > [!WARNING]
-> The `nonceSecret` must be a securely generated (eg. `openssl rand -hex 32`), high-entropy string and kept private. Changing this secret will invalidate all existing nonces, but it will return a `use_dpop_nonce` error with a new `DPoP-Nonce` value.
+> The `nonceSecret` must be a securely generated, high-entropy string (e.g., using `openssl rand -hex 32`) and must be kept private. Changing this secret will invalidate all existing nonces. However, clients will receive a `use_dpop_nonce` error along with a new `DPoP-Nonce` value, allowing them to retry. In practice, this means it is safe to rotate the `nonceSecret` as long as the client supports retry mechanisms.
 
-### Behaviour of DPoP Nonce errors
+### Behaviour of DPoP Nonce errors
 
 When a client sends a valid DPoP-bound token but omits the required nonce (or sends an invalid one), the middleware will:
 
