@@ -42,6 +42,6 @@ export function protectRoute(
       }
     }
 
-    next();
+    return next();
   };
 }

@@ -130,6 +130,10 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
       const authorization = parseAuthorizationHeader(req.headers.authorization);
 
       if (!authorization) {
+        if (authOptions.protectRoutes === false) {
+          return next();
+        }
+
         throw new Unauthorized(TOKEN_TYPE.BEARER, authOptions.audience);
       }
 
@@ -194,7 +198,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
         token: verifiedAccessToken,
       };
 
-      next();
+      return next();
     } catch (e) {
       handleError(e, res);
     }
