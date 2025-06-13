@@ -1,6 +1,6 @@
 {
 	"name": "express-oauth2-dpop",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Protect your Express API (resource server) routes with OAuth 2.0 JWT Bearer and DPoP-bound access tokens issued by an authorization server.",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -29,6 +29,7 @@
 		"@types/node": "^22.14.1",
 		"prettier": "^3.5.3",
 		"tsup": "^8.5.0",
+		"typedoc-plugin-markdown": "^4.6.4",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.34.0",
 		"vitest": "^3.2.3"

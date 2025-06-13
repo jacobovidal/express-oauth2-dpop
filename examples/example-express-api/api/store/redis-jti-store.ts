@@ -1,6 +1,6 @@
 import { AbstractJtiStore } from "express-oauth2-dpop";
-import type { JtiData } from "express-oauth2-dpop";
 import { createClient } from "redis";
+import type { JtiData } from "express-oauth2-dpop";
 
 const client = createClient({
   username: process.env.REDIS_USERNAME,

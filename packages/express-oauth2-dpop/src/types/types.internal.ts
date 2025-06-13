@@ -27,6 +27,9 @@ export type DpopProofPayload = {
    * Must be unique for each DPoP proof.
    */
   jti?: string;
+  /**
+   * Nonce provided by the resource server to enforce freshness or ordering.
+   */
   nonce?: string;
 };
 
@@ -43,4 +46,9 @@ export type NonceData = {
    * Hash of the access token.
    */
   ath?: string;
+};
+
+export type ParsedAuthorizationHeaders = null | {
+  type: TokenType;
+  accessToken: string;
 };

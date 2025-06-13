@@ -11,7 +11,7 @@ router.use(
     issuer: getEnv("AUTH_ISSUER"),
     jwksUri: getEnv("AUTH_JWKS_URI"),
     audience: getEnv("AUTH_AUDIENCE"),
-    protectRoute: false, // When disabled, you need to use protectRoute() middleware to protect the routes
+    protectRoutes: false, // When disabled, you need to use protectRoute() middleware to protect the routes
     jtiStore: new RedisJtiStore(),
     nonceSecret: getEnv("AUTH_NONCE_SECRET"),
   }),
