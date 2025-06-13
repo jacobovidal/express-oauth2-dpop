@@ -19,7 +19,7 @@ export function assertAuthOptions(authOptions: AuthMiddlewareOptions): void {
   assert(authOptions.audience, "'audience' must be provided in options");
   assert(authOptions.nonceSecret, "'nonceSecret' must be provided in options");
   assert(
-    Buffer.from(authOptions.nonceSecret, "utf8").length === 32,
+    Buffer.from(authOptions.nonceSecret, "hex").length === 32,
     "'nonceSecret' must be 32 bytes"
   );
 }
