@@ -31,7 +31,7 @@ router.get("/dpop", protectRoute({ enforceDPoP: true }), (_req, res) => {
 
 router.get(
   "/scope",
-  protectRoute({ requiredScopes: ["read:profile", "write:profile"] }),
+  protectRoute({ scope: ["read:profile", "write:profile"] }),
   (_req, res) => {
     res.json({
       message: "Hello from a scope-protected endpoint!",
