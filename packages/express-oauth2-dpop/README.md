@@ -269,7 +269,7 @@ DPoP-Nonce: eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..t6hDs2CjR5E1ZQHF.wvhSMdO3oV
 WWW-Authenticate: DPoP error="use_dpop_nonce", error_description="DPoP 'nonce' claim is required"
 ```
 
-The client must extract the `dpop_nonce` value and include it in the next DPoP proof under the `nonce` claim.
+The client must extract the `DPoP-Nonce` value from headers and include it in the next DPoP proof under the `nonce` claim.
 
 > [!NOTE]
 > When the current DPoP nonce is close to expiration, a new nonce may also be included in successful responses (e.g., 2xx status), to allow proactive refresh.
