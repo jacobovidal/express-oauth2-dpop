@@ -68,14 +68,14 @@ async function verifyAccessToken({
       throw new InvalidToken(
         TOKEN_TYPE.BEARER,
         authOptions.audience,
-        "The access token is expired"
+        "The access token is expired",
       );
     }
 
     throw new InvalidToken(
       TOKEN_TYPE.BEARER,
       authOptions.audience,
-      "The access token is invalid"
+      "The access token is invalid",
     );
   }
 }
@@ -86,12 +86,12 @@ async function verifyDpopProof(
   proof: string,
   authOptions: AuthMiddlewareOptions,
   token: string,
-  jktFromAccessToken: string
+  jktFromAccessToken: string,
 ): Promise<void> {
   try {
     const { payload, protectedHeader } = await jwtVerify<DpopProofPayload>(
       proof as string,
-      EmbeddedJWK
+      EmbeddedJWK,
     );
     const { htm, htu, ath, jti, nonce, iat } = payload;
 
@@ -113,7 +113,7 @@ async function verifyDpopProof(
       throw new InvalidDpopProof(
         TOKEN_TYPE.DPOP,
         authOptions.audience,
-        e.message
+        e.message,
       );
     }
   }
@@ -156,7 +156,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidToken(
             TOKEN_TYPE.DPOP,
             authOptions.audience,
-            "The access token needs to be DPoP-bound"
+            "The access token needs to be DPoP-bound",
           );
         }
 
@@ -164,7 +164,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidRequest(
             TOKEN_TYPE.BEARER,
             authOptions.audience,
-            "DPoP-bound access tokens must be used with a DPoP authorization header"
+            "DPoP-bound access tokens must be used with a DPoP authorization header",
           );
         }
 
@@ -174,7 +174,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           throw new InvalidRequest(
             TOKEN_TYPE.DPOP,
             authOptions.audience,
-            "DPoP header is required when using DPoP token type"
+            "DPoP header is required when using DPoP token type",
           );
         }
 
@@ -184,7 +184,7 @@ export const authMiddleware = (authOptions: AuthMiddlewareOptions): Handler => {
           proof,
           authOptions,
           verifiedAccessToken,
-          payload.cnf!.jkt
+          payload.cnf!.jkt,
         );
       }
 

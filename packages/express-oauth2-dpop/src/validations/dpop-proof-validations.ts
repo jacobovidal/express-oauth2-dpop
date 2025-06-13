@@ -1,8 +1,5 @@
 import crypto from "crypto";
-import {
-  base64url,
-  calculateJwkThumbprint,
-} from "jose";
+import { base64url, calculateJwkThumbprint } from "jose";
 import type { Request, Response } from "express";
 
 import { AbstractJtiStore } from "../store/abstract-jti-store.js";
@@ -10,7 +7,10 @@ import { UseDpopNonce } from "../errors/errors.js";
 import type { JWK, JWTHeaderParameters } from "jose";
 import type { DpopProofPayload } from "../types/types.internal.js";
 import { AuthMiddlewareOptions } from "src/types/types.js";
-import { createStatelessNonce, decryptStatelessNonce } from "src/utils/nonce-utils.js";
+import {
+  createStatelessNonce,
+  decryptStatelessNonce,
+} from "src/utils/nonce-utils.js";
 
 const IAT_LEEWAY = 30;
 

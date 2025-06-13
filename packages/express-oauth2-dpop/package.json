@@ -1,6 +1,6 @@
 {
 	"name": "express-oauth2-dpop",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Protect your Express API (resource server) routes with OAuth 2.0 JWT Bearer and DPoP-bound access tokens issued by an authorization server.",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",

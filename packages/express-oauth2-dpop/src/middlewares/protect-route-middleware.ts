@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ProtectRouteOptions } from "../types/types.js";
 
 export function protectRoute(
-  protectRouteOptions: ProtectRouteOptions = {}
+  protectRouteOptions: ProtectRouteOptions = {},
 ): (req: Request, res: Response, next: NextFunction) => void {
   const { enforceDPoP = false, scope: requiredScopes } = protectRouteOptions;
 
@@ -31,7 +31,7 @@ export function protectRoute(
       const tokenScopes = (tokenScope as string).split(" ");
 
       const hasAllScopes = requiredScopes.every((scope) =>
-        tokenScopes.includes(scope)
+        tokenScopes.includes(scope),
       );
 
       if (!hasAllScopes) {

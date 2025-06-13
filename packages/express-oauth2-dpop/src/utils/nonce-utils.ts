@@ -6,15 +6,20 @@ import type { AuthMiddlewareOptions } from "../types/types.js";
 
 const NONCE_EXPIRATION = 60 * 5;
 
-async function deriveAesGcmKeyFromNonceSecret(nonceSecret: string): Promise<CryptoKey> {
-  const keyMaterial = crypto.createHash('sha256').update(nonceSecret, 'utf8').digest();
-  
+async function deriveAesGcmKeyFromNonceSecret(
+  nonceSecret: string,
+): Promise<CryptoKey> {
+  const keyMaterial = crypto
+    .createHash("sha256")
+    .update(nonceSecret, "utf8")
+    .digest();
+
   return await crypto.subtle.importKey(
-    'raw',
+    "raw",
     keyMaterial,
-    { name: 'AES-GCM' },
+    { name: "AES-GCM" },
     false,
-    ['encrypt', 'decrypt']
+    ["encrypt", "decrypt"],
   );
 }
 
@@ -24,7 +29,9 @@ export async function createStatelessNonce(
 ): Promise<string> {
   const exp = Math.floor(Date.now() / 1000) + NONCE_EXPIRATION;
 
-  const secretKey = await deriveAesGcmKeyFromNonceSecret(authOptions.nonceSecret);
+  const secretKey = await deriveAesGcmKeyFromNonceSecret(
+    authOptions.nonceSecret,
+  );
 
   return await new EncryptJWT({ ath })
     .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
@@ -37,7 +44,9 @@ export async function decryptStatelessNonce(
   nonce: string,
   authOptions: AuthMiddlewareOptions,
 ): Promise<NonceData> {
-  const secretKey = await deriveAesGcmKeyFromNonceSecret(authOptions.nonceSecret);
+  const secretKey = await deriveAesGcmKeyFromNonceSecret(
+    authOptions.nonceSecret,
+  );
 
   const { payload } = await jwtDecrypt(nonce, secretKey);
 

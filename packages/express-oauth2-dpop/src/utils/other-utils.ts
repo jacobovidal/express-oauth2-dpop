@@ -2,9 +2,7 @@ import assert from "assert";
 
 import { TOKEN_TYPE } from "../constants/constants.js";
 import type { AuthMiddlewareOptions } from "../types/types.js";
-import type {
-  ParsedAuthorizationHeaders,
-} from "../types/types.internal.js";
+import type { ParsedAuthorizationHeaders } from "../types/types.internal.js";
 
 export function buildJwksUri(authOptions: AuthMiddlewareOptions): URL {
   const { issuer, jwksUri } = authOptions;
@@ -22,12 +20,12 @@ export function assertAuthOptions(authOptions: AuthMiddlewareOptions): void {
   assert(authOptions.nonceSecret, "'nonceSecret' must be provided in options");
   assert(
     authOptions.nonceSecret.length === 32,
-    "'nonceSecret' must be 32 bytes"
+    "'nonceSecret' must be 32 bytes",
   );
 }
 
 export function parseAuthorizationHeader(
-  authorization?: string
+  authorization?: string,
 ): ParsedAuthorizationHeaders {
   if (!authorization) {
     return null;

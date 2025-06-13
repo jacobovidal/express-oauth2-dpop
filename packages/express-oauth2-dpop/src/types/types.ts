@@ -113,7 +113,7 @@ export type ProtectRouteOptions = {
    * @default false
    */
   enforceDPoP?: boolean;
-  
+
   /**
    * List of required scopes for the protected route.
    * If provided, the access token must include **at least** all listed scopes.
