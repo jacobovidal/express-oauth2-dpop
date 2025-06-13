@@ -129,7 +129,7 @@ app.get(
 
 To prevent DPoP token replay attacks, the middleware requires a **JTI Store**, a mechanism to store and validate unique JWT IDs (`jti` claims).
 
-For testing purposes, you can use in-memory store. For production usage, you should implement your own store backed by a persistent storage like Redis.
+For testing purposes, you can use in-memory store. For production usage, you should implement your own store (e.g., Redis).
 
 ### Implementing the custom store
 
