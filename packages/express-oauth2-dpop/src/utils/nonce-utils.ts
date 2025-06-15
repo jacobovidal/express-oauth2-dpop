@@ -4,11 +4,11 @@ import { EncryptJWT, jwtDecrypt } from "jose";
 import type { NonceData } from "../types/types.internal.js";
 import type { AuthMiddlewareOptions } from "../types/types.js";
 
-const NONCE_EXPIRATION = 60 * 5;
+export const NONCE_EXPIRATION = 60 * 5;
 
-async function deriveAesGcmKeyFromNonceSecret(
+export async function deriveAesGcmKeyFromNonceSecret(
   nonceSecret: string,
-): Promise<CryptoKey> {
+): Promise<CryptoKey & { algorithm: AesKeyAlgorithm }> {
   const keyMaterial = crypto
     .createHash("sha256")
     .update(nonceSecret, "utf8")
@@ -20,7 +20,7 @@ async function deriveAesGcmKeyFromNonceSecret(
     { name: "AES-GCM" },
     false,
     ["encrypt", "decrypt"],
-  );
+  ) as CryptoKey & { algorithm: AesKeyAlgorithm };
 }
 
 export async function createStatelessNonce(
