@@ -13,14 +13,23 @@ import {
 import type { AuthMiddlewareOptions } from "../types/types.js";
 
 const IAT_LEEWAY = 30;
+export const SUPPORTED_DPOP_ALGORITHMS = ['ES256', 'RS256', 'PS256', 'EdDSA'] as const;
 
 export function validateProofHeaders(headers: JWTHeaderParameters): void {
   if (headers.typ !== "dpop+jwt") {
     throw new Error("DPoP 'typ' header must be 'dpop+jwt'");
   }
 
-  if (headers.alg) {
-    // TODO: validate dpop_signing_alg_values_supported
+  if (!headers.alg || typeof headers.alg !== "string") {
+    throw new Error("DPoP 'alg' header must be present and a string");
+  }
+
+  if (headers.alg === "none") {
+    throw new Error("DPoP 'alg' header must not be 'none'");
+  }
+
+  if (!SUPPORTED_DPOP_ALGORITHMS.includes(headers.alg as typeof SUPPORTED_DPOP_ALGORITHMS[number])) {
+    throw new Error(`Unsupported or insecure DPoP 'alg': ${headers.alg}`);
   }
 }
 
