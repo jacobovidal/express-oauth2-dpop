@@ -16,6 +16,25 @@ Middleware for Express to protect your API routes (resource server) with OAuth 2
 - 🌐 **Standards-compliant:** Follows [RFC 9449 (DPoP)](https://datatracker.ietf.org/doc/html/rfc9449) and [RFC 6750 (OAuth 2.0 Authorization Framework)](https://datatracker.ietf.org/doc/html/rfc6750).
 - 🧪 **Minimal setup for testing:** Includes a simple in-memory JTI store for local development and testing environments.
 
+## Table of Contents
+<!-- no toc -->
+- [Installation](#installation)
+- [Getting started](#getting-started)
+  - [Set up the auth middleware](#set-up-the-auth-middleware)
+  - [Protect routes](#protect-routes)
+    - [Enforcing DPoP](#enforcing-dpop)
+    - [Require scopes](#require-scopes)
+- [DPoP JTI Store](#dpop-jti-store)
+  - [Implementing the custom store](#implementing-the-custom-store)
+    - [Redis example](#redis-example)
+    - [In-Memory example](#in-memory-example)
+  - [Using the custom store](#using-the-custom-store)
+- [DPoP Nonce](#dpop-nonce)
+  - [Behaviour of DPoP Nonce errors](#behaviour-of-dpop-nonce-errors)
+- [API Reference](https://github.com/jacobovidal/express-oauth2-dpop/blob/main/packages/express-oauth2-dpop/docs/README.md)
+- [Live demo](https://oauth-fetch.oauthlabs.com/)
+
+
 ## Installation
 
 ```bash
