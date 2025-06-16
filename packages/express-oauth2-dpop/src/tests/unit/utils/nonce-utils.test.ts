@@ -9,7 +9,7 @@ import {
   NONCE_EXPIRATION,
 } from "../../../utils/nonce-utils.js";
 import { AuthMiddlewareOptions } from "../../../types/types.js";
-import { MockJtiStore } from "../../mocks/jti-store-mock.test.js";
+import { MockJtiStore } from "../../mocks/jti-store-mock.js";
 
 describe("nonce-utils", () => {
   const mockNonceSecret = crypto.randomBytes(32).toString("hex");
@@ -25,7 +25,6 @@ describe("nonce-utils", () => {
     test("should generate a valid AES-GCM key based on a 32 bytes secret", async () => {
       const cryptoKey = await deriveAesGcmKeyFromNonceSecret(mockNonceSecret);
 
-      console.log("cryptoKey", cryptoKey);
       expect(cryptoKey.type).toBe("secret");
       expect(cryptoKey.extractable).toBeFalsy();
       expect(cryptoKey.algorithm.name).toBe("AES-GCM");

@@ -8,7 +8,7 @@ import {
 } from "../../../utils/other-utils.js";
 import { TOKEN_TYPE } from "../../../constants/constants.js";
 import { AuthMiddlewareOptions } from "../../../types/types.js";
-import { MockJtiStore } from "../../mocks/jti-store-mock.test.js";
+import { MockJtiStore } from "../../mocks/jti-store-mock.js";
 
 describe("other-utils", () => {
   const mockNonceSecret = crypto.randomBytes(32).toString("hex");

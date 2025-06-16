@@ -3,7 +3,7 @@ import type { Express } from "express";
 import crypto from "crypto";
 
 import { AUTH_BASE_URL } from "./setup-jwks.js";
-import { MockJtiStore } from "../mocks/jti-store-mock.test.js";
+import { MockJtiStore } from "../mocks/jti-store-mock.js";
 import { authMiddleware } from "../../middlewares/auth-middleware.js";
 import { protectRoute } from "../../middlewares/protect-route-middleware.js";
 

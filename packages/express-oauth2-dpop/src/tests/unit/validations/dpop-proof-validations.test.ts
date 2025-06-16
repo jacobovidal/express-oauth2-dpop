@@ -14,7 +14,7 @@ import {
   validateNonce,
 } from "../../../validations/dpop-proof-validations.js";
 import * as nonceUtils from "../../../utils/nonce-utils.js";
-import { MockJtiStore } from "../../../tests/mocks/jti-store-mock.test.js";
+import { MockJtiStore } from "../../mocks/jti-store-mock.js";
 import { UseDpopNonce } from "../../../errors/errors.js";
 import type { AuthMiddlewareOptions } from "../../..//types/types.js";
 
