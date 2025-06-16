@@ -2,16 +2,9 @@ import { AbstractJtiStore } from "express-oauth2-dpop";
 import { createClient } from "redis";
 import type { JtiData } from "express-oauth2-dpop";
 
-const client = createClient({
-  username: process.env.REDIS_USERNAME,
-  password: process.env.REDIS_PASSWORD,
-  socket: {
-    host: process.env.REDIS_HOST,
-    port: Number(process.env.REDIS_PORT),
-  },
-});
-
-await client.connect();
+const client = await createClient({
+  url: process.env.REDIS_URL,
+}).connect();
 
 export class RedisJtiStore extends AbstractJtiStore {
   async set(identifier: string, data: JtiData): Promise<void> {
