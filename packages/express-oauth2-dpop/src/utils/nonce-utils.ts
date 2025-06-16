@@ -14,13 +14,13 @@ export async function deriveAesGcmKeyFromNonceSecret(
     .update(nonceSecret, "utf8")
     .digest();
 
-  return await crypto.subtle.importKey(
+  return (await crypto.subtle.importKey(
     "raw",
     keyMaterial,
     { name: "AES-GCM" },
     false,
     ["encrypt", "decrypt"],
-  ) as CryptoKey & { algorithm: AesKeyAlgorithm };
+  )) as CryptoKey & { algorithm: AesKeyAlgorithm };
 }
 
 export async function createStatelessNonce(

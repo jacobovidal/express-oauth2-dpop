@@ -44,7 +44,7 @@ describe("nonce-utils", () => {
     test("should create a stateless nonce that can be decrypted correctly", async () => {
       const generatedNonce = await createStatelessNonce(
         mockAth,
-        mockAuthOptions
+        mockAuthOptions,
       );
 
       expect(typeof generatedNonce).toBe("string");
@@ -52,7 +52,7 @@ describe("nonce-utils", () => {
 
       const decrypted = await decryptStatelessNonce(
         generatedNonce,
-        mockAuthOptions
+        mockAuthOptions,
       );
       expect(decrypted.ath).toBe(mockAth);
       expect(typeof decrypted.iat).toBe("number");
@@ -62,7 +62,7 @@ describe("nonce-utils", () => {
     test("should fail to decrypt with a different secret", async () => {
       const generatedNonce = await createStatelessNonce(
         mockAth,
-        mockAuthOptions
+        mockAuthOptions,
       );
 
       const wrongOptions = {
@@ -71,7 +71,7 @@ describe("nonce-utils", () => {
       };
 
       await expect(
-        decryptStatelessNonce(generatedNonce, wrongOptions)
+        decryptStatelessNonce(generatedNonce, wrongOptions),
       ).rejects.toThrow();
     });
   });
@@ -90,7 +90,7 @@ describe("nonce-utils", () => {
       const malformedNonce = "this.is.not.a.valid.nonce";
 
       await expect(
-        decryptStatelessNonce(malformedNonce, mockAuthOptions)
+        decryptStatelessNonce(malformedNonce, mockAuthOptions),
       ).rejects.toThrow();
     });
 
@@ -106,7 +106,7 @@ describe("nonce-utils", () => {
         .encrypt(secretKey);
 
       await expect(
-        decryptStatelessNonce(expiringNonce, mockAuthOptions)
+        decryptStatelessNonce(expiringNonce, mockAuthOptions),
       ).rejects.toThrow('"exp" claim timestamp check failed');
     });
   });

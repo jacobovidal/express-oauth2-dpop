@@ -57,7 +57,7 @@ describe("other-utils", () => {
       const options = { ...baseOptions, issuer: undefined };
       // @ts-expect-error - Invalid options
       expect(() => assertAuthOptions(options)).toThrow(
-        "'issuer' must be provided in options"
+        "'issuer' must be provided in options",
       );
     });
 
@@ -65,7 +65,7 @@ describe("other-utils", () => {
       const options = { ...baseOptions, audience: undefined };
       // @ts-expect-error - Invalid options
       expect(() => assertAuthOptions(options)).toThrow(
-        "'audience' must be provided in options"
+        "'audience' must be provided in options",
       );
     });
 
@@ -73,7 +73,7 @@ describe("other-utils", () => {
       const options = { ...baseOptions, nonceSecret: undefined };
       // @ts-expect-error - Invalid options
       expect(() => assertAuthOptions(options)).toThrow(
-        "'nonceSecret' must be provided in options"
+        "'nonceSecret' must be provided in options",
       );
     });
 
@@ -83,7 +83,7 @@ describe("other-utils", () => {
         nonceSecret: crypto.randomBytes(24).toString("hex"),
       };
       expect(() => assertAuthOptions(options)).toThrow(
-        "'nonceSecret' must be 32 bytes"
+        "'nonceSecret' must be 32 bytes",
       );
     });
   });

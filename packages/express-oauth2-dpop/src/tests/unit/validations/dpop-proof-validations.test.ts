@@ -34,18 +34,18 @@ describe("dpop-validator", () => {
     test("throws if typ header is missing or incorrect", () => {
       // @ts-expect-error - Invalid headers
       expect(() => validateProofHeaders({})).toThrow(
-        "DPoP 'typ' header must be 'dpop+jwt'"
+        "DPoP 'typ' header must be 'dpop+jwt'",
       );
 
       expect(() =>
         // @ts-expect-error - Invalid headers
-        validateProofHeaders({ typ: "wrong" })
+        validateProofHeaders({ typ: "wrong" }),
       ).toThrow("DPoP 'typ' header must be 'dpop+jwt'");
     });
 
     test("does not throw for valid typ header", () => {
       expect(() =>
-        validateProofHeaders({ typ: "dpop+jwt", alg: "ES256" })
+        validateProofHeaders({ typ: "dpop+jwt", alg: "ES256" }),
       ).not.toThrow();
     });
   });
@@ -56,17 +56,17 @@ describe("dpop-validator", () => {
 
     test("throws if iat is missing", () => {
       expect(() => validateIat(undefined)).toThrow(
-        "DPoP 'iat' claim is required"
+        "DPoP 'iat' claim is required",
       );
     });
 
     test("throws if iat is outside acceptable range", () => {
       expect(() => validateIat(now - IAT_LEEWAY - 1)).toThrow(
-        "DPoP 'iat' is not within acceptable time range"
+        "DPoP 'iat' is not within acceptable time range",
       );
 
       expect(() => validateIat(now + IAT_LEEWAY + 1)).toThrow(
-        "DPoP 'iat' is not within acceptable time range"
+        "DPoP 'iat' is not within acceptable time range",
       );
     });
 
@@ -83,20 +83,20 @@ describe("dpop-validator", () => {
 
     test("throws if htm is missing", () => {
       expect(() => validateHtm(mockReq, undefined)).toThrow(
-        "DPoP 'htm' claim is required"
+        "DPoP 'htm' claim is required",
       );
     });
 
     test("throws if htm does not match request method", () => {
       expect(() => validateHtm(mockReq, "POST")).toThrow(
-        "DPoP 'htm' mismatch: expected 'GET', got 'POST'"
+        "DPoP 'htm' mismatch: expected 'GET', got 'POST'",
       );
     });
 
     test("does not throw if htm matches request method (case-insensitive)", () => {
       expect(() => validateHtm(mockReq, "GET")).not.toThrow();
       expect(() =>
-        validateHtm(mockReqWithCaseInsensitiveMethod, "POST")
+        validateHtm(mockReqWithCaseInsensitiveMethod, "POST"),
       ).not.toThrow();
     });
   });
@@ -110,7 +110,7 @@ describe("dpop-validator", () => {
 
     test("throws if htu is missing", () => {
       expect(() => validateHtu(mockReq, undefined)).toThrow(
-        "DPoP 'htu' claim is required"
+        "DPoP 'htu' claim is required",
       );
     });
 
@@ -118,7 +118,7 @@ describe("dpop-validator", () => {
       const expectedUrl = "https://example.com/foo/bar";
 
       expect(() => validateHtu(mockReq, "https://example.com/other")).toThrow(
-        `DPoP 'htu' mismatch: expected "${expectedUrl}", got "https://example.com/other"`
+        `DPoP 'htu' mismatch: expected "${expectedUrl}", got "https://example.com/other"`,
       );
     });
 
@@ -140,7 +140,7 @@ describe("dpop-validator", () => {
       mockedCalculateJwkThumbprint.mockResolvedValueOnce("thumbprint");
 
       await expect(validateJwk(jwk, "differentThumbprint")).rejects.toThrow(
-        "DPoP 'jkt' mismatch"
+        "DPoP 'jkt' mismatch",
       );
     });
 
@@ -156,7 +156,7 @@ describe("dpop-validator", () => {
   describe("validateAth", () => {
     test("throws if ath is missing", async () => {
       await expect(validateAth("token", undefined)).rejects.toThrow(
-        "DPoP 'ath' claim is required"
+        "DPoP 'ath' claim is required",
       );
     });
 
@@ -164,7 +164,7 @@ describe("dpop-validator", () => {
       const wrongAth = "wrongAth";
 
       await expect(validateAth("token", wrongAth)).rejects.toThrow(
-        "DPoP 'ath' mismatch"
+        "DPoP 'ath' mismatch",
       );
     });
 
@@ -186,7 +186,7 @@ describe("dpop-validator", () => {
 
     test("throws if jti is missing", async () => {
       await expect(validateJti(undefined, jtiStore)).rejects.toThrow(
-        "DPoP 'jti' claim is required"
+        "DPoP 'jti' claim is required",
       );
     });
 
@@ -196,7 +196,7 @@ describe("dpop-validator", () => {
       await validateJti(jti, jtiStore);
 
       await expect(validateJti(jti, jtiStore)).rejects.toThrow(
-        "DPoP 'jti' has already been used"
+        "DPoP 'jti' has already been used",
       );
     });
 
@@ -227,18 +227,20 @@ describe("dpop-validator", () => {
 
     test("throws UseDpopNonce and returns DPoP-Nonce header if nonce is missing", async () => {
       vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue(
-        "new-nonce"
+        "new-nonce",
       );
 
       await expect(
-        validateNonce(undefined, "ath-value", mockRes, mockAuthOptions)
+        validateNonce(undefined, "ath-value", mockRes, mockAuthOptions),
       ).rejects.toThrow(UseDpopNonce);
 
       expect(mockRes.setHeader).toHaveBeenCalledWith("DPoP-Nonce", "new-nonce");
     });
 
     test("throws UseDpopNonce and returns DPoP-Nonce header if token ath does not match nonce ath", async () => {
-      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue("new-nonce");
+      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue(
+        "new-nonce",
+      );
 
       const now = Math.floor(Date.now() / 1000);
 
@@ -248,13 +250,17 @@ describe("dpop-validator", () => {
         exp: now + 120,
       });
 
-      await expect(validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions)).rejects.toThrow(UseDpopNonce);
+      await expect(
+        validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions),
+      ).rejects.toThrow(UseDpopNonce);
 
       expect(mockRes.setHeader).toHaveBeenCalledWith("DPoP-Nonce", "new-nonce");
     });
 
     test("returns DPoP-Nonce header if nonce exp is less than 60 seconds", async () => {
-      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue("new-nonce");
+      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue(
+        "new-nonce",
+      );
 
       const now = Math.floor(Date.now() / 1000);
 
@@ -264,13 +270,17 @@ describe("dpop-validator", () => {
         exp: now + 30,
       });
 
-      await expect(validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions)).resolves.not.toThrow();
+      await expect(
+        validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions),
+      ).resolves.not.toThrow();
 
       expect(mockRes.setHeader).toHaveBeenCalledWith("DPoP-Nonce", "new-nonce");
     });
 
     test("does not set header and does not throw if nonce is valid and not expiring soon", async () => {
-      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue("new-nonce");
+      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue(
+        "new-nonce",
+      );
 
       const now = Math.floor(Date.now() / 1000);
 
@@ -280,17 +290,25 @@ describe("dpop-validator", () => {
         exp: now + 120,
       });
 
-      await expect(validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions)).resolves.not.toThrow();
+      await expect(
+        validateNonce("some-nonce", "ath-value", mockRes, mockAuthOptions),
+      ).resolves.not.toThrow();
 
       expect(mockRes.setHeader).not.toHaveBeenCalled();
     });
 
     test("throws UseDpopNonce and sets header if decryptStatelessNonce throws", async () => {
-      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue("new-nonce");
+      vi.spyOn(nonceUtils, "createStatelessNonce").mockResolvedValue(
+        "new-nonce",
+      );
 
-      vi.spyOn(nonceUtils, "decryptStatelessNonce").mockRejectedValue(new Error());
+      vi.spyOn(nonceUtils, "decryptStatelessNonce").mockRejectedValue(
+        new Error(),
+      );
 
-      await expect(validateNonce("invalid-nonce", "ath-value", mockRes, mockAuthOptions)).rejects.toThrow(UseDpopNonce);
+      await expect(
+        validateNonce("invalid-nonce", "ath-value", mockRes, mockAuthOptions),
+      ).rejects.toThrow(UseDpopNonce);
 
       expect(mockRes.setHeader).toHaveBeenCalledWith("DPoP-Nonce", "new-nonce");
     });

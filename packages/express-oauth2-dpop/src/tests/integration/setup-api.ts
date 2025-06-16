@@ -36,7 +36,7 @@ export function setupApi(options: ApiOptions = {}): Express {
       jtiStore: new MockJtiStore(),
       enforceDPoP,
       nonceSecret: crypto.randomBytes(32).toString("hex"),
-    })
+    }),
   );
 
   app.get("/private/bearer", protectRoute(), (_req, res) => {
@@ -58,7 +58,7 @@ export function setupApi(options: ApiOptions = {}): Express {
       res.json({
         message: "Hello from scope-protected endpoint!",
       });
-    }
+    },
   );
 
   app.get("/private/hello", (req, res) => {

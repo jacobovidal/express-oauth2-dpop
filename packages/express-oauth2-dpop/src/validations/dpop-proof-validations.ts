@@ -13,7 +13,12 @@ import {
 import type { AuthMiddlewareOptions } from "../types/types.js";
 
 const IAT_LEEWAY = 30;
-export const SUPPORTED_DPOP_ALGORITHMS = ['ES256', 'RS256', 'PS256', 'EdDSA'] as const;
+export const SUPPORTED_DPOP_ALGORITHMS = [
+  "ES256",
+  "RS256",
+  "PS256",
+  "EdDSA",
+] as const;
 
 export function validateProofHeaders(headers: JWTHeaderParameters): void {
   if (headers.typ !== "dpop+jwt") {
@@ -28,7 +33,11 @@ export function validateProofHeaders(headers: JWTHeaderParameters): void {
     throw new Error("DPoP 'alg' header must not be 'none'");
   }
 
-  if (!SUPPORTED_DPOP_ALGORITHMS.includes(headers.alg as typeof SUPPORTED_DPOP_ALGORITHMS[number])) {
+  if (
+    !SUPPORTED_DPOP_ALGORITHMS.includes(
+      headers.alg as (typeof SUPPORTED_DPOP_ALGORITHMS)[number],
+    )
+  ) {
     throw new Error(`Unsupported or insecure DPoP 'alg': ${headers.alg}`);
   }
 }
@@ -45,7 +54,7 @@ export function validateIat(iat: DpopProofPayload["iat"]): void {
 
   if (iat < lowerBound || iat > upperBound) {
     throw new Error(
-      `DPoP 'iat' is not within acceptable time range: expected between ${lowerBound} and ${upperBound}, got ${iat}`
+      `DPoP 'iat' is not within acceptable time range: expected between ${lowerBound} and ${upperBound}, got ${iat}`,
     );
   }
 }
@@ -59,7 +68,7 @@ export function validateHtm(req: Request, htm: DpopProofPayload["htm"]): void {
 
   if (htm !== expectedMethod) {
     throw new Error(
-      `DPoP 'htm' mismatch: expected '${expectedMethod}', got '${htm}'`
+      `DPoP 'htm' mismatch: expected '${expectedMethod}', got '${htm}'`,
     );
   }
 }
@@ -75,7 +84,7 @@ export function validateHtu(req: Request, htu: DpopProofPayload["htu"]): void {
 
   if (htu !== expectedUrl) {
     throw new Error(
-      `DPoP 'htu' mismatch: expected "${expectedUrl}", got "${htu}"`
+      `DPoP 'htu' mismatch: expected "${expectedUrl}", got "${htu}"`,
     );
   }
 }
@@ -85,14 +94,14 @@ export async function validateJwk(jwk: JWK, jkt: string): Promise<void> {
 
   if (jkt !== expectedJkt) {
     throw new Error(
-      `DPoP 'jkt' mismatch: expected '${expectedJkt}', got '${jkt}'`
+      `DPoP 'jkt' mismatch: expected '${expectedJkt}', got '${jkt}'`,
     );
   }
 }
 
 export async function validateAth(
   token: string,
-  ath: DpopProofPayload["ath"]
+  ath: DpopProofPayload["ath"],
 ): Promise<void> {
   if (!ath) {
     throw new Error("DPoP 'ath' claim is required");
@@ -103,14 +112,14 @@ export async function validateAth(
 
   if (ath !== expectedAth) {
     throw new Error(
-      `DPoP 'ath' mismatch: expected '${expectedAth}', got '${ath}'`
+      `DPoP 'ath' mismatch: expected '${expectedAth}', got '${ath}'`,
     );
   }
 }
 
 export async function validateJti(
   jti: DpopProofPayload["jti"],
-  jtiStore: AbstractJtiStore
+  jtiStore: AbstractJtiStore,
 ): Promise<void> {
   if (!jti) {
     throw new Error("DPoP 'jti' claim is required");
@@ -133,7 +142,7 @@ export async function validateNonce(
   nonce: DpopProofPayload["nonce"],
   ath: DpopProofPayload["ath"],
   res: Response,
-  authOptions: AuthMiddlewareOptions
+  authOptions: AuthMiddlewareOptions,
 ): Promise<void> {
   const newNonce = await createStatelessNonce(ath as string, authOptions);
 
@@ -146,7 +155,7 @@ export async function validateNonce(
   try {
     const { ath: nonceAth, exp: nonceExp } = await decryptStatelessNonce(
       nonce,
-      authOptions
+      authOptions,
     );
 
     if (ath !== nonceAth) {

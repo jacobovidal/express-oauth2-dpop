@@ -5,7 +5,7 @@ import { AUTH_BASE_URL, privateKey, publicJwk } from "./setup-jwks.js";
 import { DEFAULT_AUDIENCE } from "./setup-api.js";
 
 export async function generateAccessToken(
-  payload: JWTPayload = {}
+  payload: JWTPayload = {},
 ): Promise<string> {
   const {
     iat = Math.floor(Date.now() / 1000),
