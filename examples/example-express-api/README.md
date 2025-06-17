@@ -16,7 +16,7 @@ npm install
 
 ## ⚙️ Configuration
 
-This example usis a Redis instance to store JTI values. For testing purposes, you can use the In-Memory abstraction for simplicity:
+This example uses a Redis instance to store JTI values. For testing purposes, you can use the In-Memory abstraction for simplicity:
 
 ```javascript
 import { InMemoryJtiStore } from "./store/in-memory-jti-store.js";

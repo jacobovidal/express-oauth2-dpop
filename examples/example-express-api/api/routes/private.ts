@@ -8,9 +8,8 @@ const router = express.Router();
 
 router.use(
   authMiddleware({
-    issuer: getEnv("AUTH_ISSUER"),
-    jwksUri: getEnv("AUTH_JWKS_URI"),
-    audience: getEnv("AUTH_AUDIENCE"),
+    issuer: "https://auth.playground.oauthlabs.com",
+    audience: "https://api.playground.oauthlabs.com",
     protectRoutes: false, // When disabled, you need to use protectRoute() middleware to protect the routes
     jtiStore: new RedisJtiStore(),
     nonceSecret: getEnv("AUTH_NONCE_SECRET"),
